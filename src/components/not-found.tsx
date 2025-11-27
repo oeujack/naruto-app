@@ -1,13 +1,10 @@
-import { Box, Button, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
-import imgWhite from '@assets/palha-white.webp';
+import { Box, Typography } from '@mui/material';
+import imgWhite from '@assets/palha.webp';
 import '@styles/not-found.css';
 import { useEffect } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+import FuzzyText from '@components/fuzzy-text';
 
 export default function PageNotFound() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const element = document.querySelector('.bounce') as HTMLElement;
     if (element) {
@@ -26,21 +23,26 @@ export default function PageNotFound() {
         textAlign: 'center',
       }}
     >
-      <Typography
-        component={motion.h1}
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 100 }}
+      <Box
         sx={{
-          fontSize: '4rem',
+          fontSize: '120px',
           fontWeight: 'bold',
-          mb: 2,
-          fontFamily: 'Varela Round, sans-serif',
+          lineHeight: 1,
+          mb: 4,
+          // Importante: FuzzyText precisa de um tamanho de fonte definido
+          '& .fuzzy-text': {
+            fontSize: 'inherit',
+          },
         }}
       >
-        404
-      </Typography>
-
+        <FuzzyText
+          baseIntensity={0.3}
+          fontWeight={700}
+          color="#000"
+        >
+          404
+        </FuzzyText>
+      </Box>
       <Box
         sx={{
           m: '1em auto',
@@ -138,18 +140,6 @@ export default function PageNotFound() {
           >
             A página que você está tentando acessar não existe ou foi movida.
           </Typography>
-
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <Button
-              color="warning"
-              variant="contained"
-              sx={{ fontFamily: 'Varela Round, sans-serif' }}
-              // onClick={handleLogout}
-              onClick={() => navigate({ to: '/' })}
-            >
-              Ir para página principal
-            </Button>
-          </Box>
         </Box>
       </Box>
     </Box>
