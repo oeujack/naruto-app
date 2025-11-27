@@ -1,9 +1,15 @@
 import DomeGallery from '@components/DomeGallery';
 import { useQueryGetCharacters } from '@hooks/use-query-characters';
+import type { Characters } from '@models/characters';
 import { useState } from 'react';
 
-// Componente para exibir os detalhes do personagem
-function CharacterModal({ character, onClose }) {
+function CharacterModal({
+  character,
+  onClose,
+}: {
+  character: Characters;
+  onClose: () => void;
+}) {
   if (!character) return null;
 
   return (
@@ -96,21 +102,9 @@ function CharacterModal({ character, onClose }) {
             </h2>
 
             <div style={{ display: 'grid', gap: '15px' }}>
-              {character.father && (
-                <InfoRow label="Pai" value={character.father} />
-              )}
-              {character.mother && (
-                <InfoRow label="Mãe" value={character.mother} />
-              )}
-              {character.village && (
-                <InfoRow label="Vila" value={character.village} />
-              )}
-              {character.rank && (
-                <InfoRow label="Rank" value={character.rank} />
-              )}
-              {character.power && (
-                <InfoRow label="Poder" value={character.power} />
-              )}
+              <InfoRow label="Vila" value={character.village.name} />
+              <InfoRow label="Rank" value={character.rank} />
+              <InfoRow label="Poder" value={character.power.toString()} />
             </div>
 
             {character.summary && (
@@ -129,87 +123,14 @@ function CharacterModal({ character, onClose }) {
                 </p>
               </div>
             )}
-
-            {character.jutsus && character.jutsus.length > 0 && (
-              <div style={{ marginTop: '20px' }}>
-                <h3
-                  style={{
-                    fontSize: '18px',
-                    marginBottom: '10px',
-                    color: '#a0a0ff',
-                  }}
-                >
-                  Jutsus
-                </h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {character.jutsus.map((jutsu, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        padding: '6px 12px',
-                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                        borderRadius: '20px',
-                        fontSize: '14px',
-                        border: '1px solid rgba(102, 126, 234, 0.4)',
-                      }}
-                    >
-                      {jutsu}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
-
-        {character.images && character.images.length > 0 && (
-          <div style={{ marginTop: '30px' }}>
-            <h3
-              style={{
-                fontSize: '18px',
-                marginBottom: '15px',
-                color: '#a0a0ff',
-              }}
-            >
-              Galeria
-            </h3>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-                gap: '15px',
-              }}
-            >
-              {character.images.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`${character.name} ${index + 1}`}
-                  style={{
-                    width: '100%',
-                    height: '150px',
-                    objectFit: 'cover',
-                    borderRadius: '10px',
-                    cursor: 'pointer',
-                    transition: 'transform 0.3s',
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = 'scale(1.05)')
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = 'scale(1)')
-                  }
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 }
 
-function InfoRow({ label, value }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: 'flex', gap: '10px' }}>
       <span style={{ fontWeight: 'bold', color: '#a0a0ff', minWidth: '80px' }}>
@@ -222,20 +143,22 @@ function InfoRow({ label, value }) {
 
 export default function ViewCharacters() {
   const { data, isLoading, error } = useQueryGetCharacters();
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Characters | null>(
+    null
+  );
 
-  // Preparar as imagens para o DomeGallery
   const galleryImages =
     data?.map((character) => ({
       src: character.profile_image,
       alt: character.name,
-      characterData: character,
     })) || [];
 
-  // Handler customizado para quando uma imagem for clicada
-  const handleImageClick = (imageData) => {
-    if (imageData?.characterData) {
-      setSelectedCharacter(imageData.characterData);
+  const handleImageClick = (imageData: Characters, index: number) => {
+    const character =
+      data?.[index] ||
+      data?.find((char) => char.profile_image === imageData?.profile_image);
+    if (character) {
+      setSelectedCharacter(character);
     }
   };
 
@@ -287,9 +210,9 @@ export default function ViewCharacters() {
           openedImageBorderRadius="20px"
           grayscale={true}
           overlayBlurColor="#0a0a1e"
+          onImageClick={handleImageClick}
         />
 
-        {/* Overlay customizado para capturar cliques */}
         <div
           style={{
             position: 'absolute',

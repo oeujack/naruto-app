@@ -146,7 +146,7 @@ export default function PageNotFound() {
               variant="contained"
               sx={{ fontFamily: 'Varela Round, sans-serif' }}
               // onClick={handleLogout}
-              onClick={() => navigate({ to: '/inicio' })}
+              onClick={() => navigate({ to: '/' })}
             >
               Ir para página principal
             </Button>
