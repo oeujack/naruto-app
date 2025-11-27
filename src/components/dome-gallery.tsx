@@ -579,16 +579,6 @@ export default function DomeGallery({
     }
   };
 
-  // const onTileClick = useCallback(
-  //   (e: React.MouseEvent<HTMLDivElement>) => {
-  //     if (draggingRef.current) return;
-  //     if (movedRef.current) return;
-  //     if (performance.now() - lastDragEndAt.current < 80) return;
-  //     if (openingRef.current) return;
-  //     openItemFromElement(e.currentTarget);
-  //   },
-  //   [openItemFromElement]
-  // );
   const onTileClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (draggingRef.current) return;
@@ -602,6 +592,8 @@ export default function DomeGallery({
       const imgIndex = items.findIndex((it) => it.src === imgSrc);
 
       if (onImageClick && imgIndex >= 0) {
+        e.preventDefault();
+        e.stopPropagation();
         const originalImage = images[imgIndex % images.length];
         onImageClick(originalImage, imgIndex % images.length);
         return; // Não abre a imagem ampliada
@@ -619,10 +611,36 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+
+      // ADICIONE ESTA PARTE - Interceptar no mobile também
+      const parent = e.currentTarget.parentElement as HTMLElement;
+      const imgSrc = parent.dataset.src;
+      const imgIndex = items.findIndex((it) => it.src === imgSrc);
+
+      if (onImageClick && imgIndex >= 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        const originalImage = images[imgIndex % images.length];
+        onImageClick(originalImage, imgIndex % images.length);
+        return; // Não abre a imagem ampliada
+      }
+
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [openItemFromElement, onImageClick, items, images]
   );
+
+  // const onTilePointerUp = useCallback(
+  //   (e: React.PointerEvent<HTMLDivElement>) => {
+  //     if (e.pointerType !== 'touch') return;
+  //     if (draggingRef.current) return;
+  //     if (movedRef.current) return;
+  //     if (performance.now() - lastDragEndAt.current < 80) return;
+  //     if (openingRef.current) return;
+  //     openItemFromElement(e.currentTarget);
+  //   },
+  //   [openItemFromElement]
+  // );
 
   useEffect(() => {
     const scrim = scrimRef.current;

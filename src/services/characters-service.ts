@@ -12,8 +12,3 @@ export async function getCharacters(): Promise<Characters[]> {
   );
   return response.data;
 }
-
-export async function getCharactersById(id: number): Promise<Characters[]> {
-  const response = await api.get(`${ENV.BASE_URL}${ENV.CHARACTERS}/${id}`);
-  return response.data;
-}
