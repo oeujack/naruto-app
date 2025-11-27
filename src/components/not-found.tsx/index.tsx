@@ -1,12 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import imgWhite from '@assets/palha-white.webp';
-import './style.css';
+import '@styles/not-found.css';
 import { useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 
 export default function PageNotFound() {
-
   const navigate = useNavigate();
 
   useEffect(() => {

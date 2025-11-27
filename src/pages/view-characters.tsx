@@ -1,4 +1,4 @@
-import DomeGallery from '@components/DomeGallery';
+import DomeGallery from '@components/dome-gallery';
 import { useQueryGetCharacters } from '@hooks/use-query-characters';
 import type { Characters } from '@models/characters';
 import { useState } from 'react';
