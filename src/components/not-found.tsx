@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import imgWhite from '@assets/palha.webp';
 import '@styles/not-found.css';
+
 import { useEffect } from 'react';
 import FuzzyText from '@components/fuzzy-text';
 
@@ -29,7 +30,7 @@ export default function PageNotFound() {
           fontWeight: 'bold',
           lineHeight: 1,
           mb: 4,
-          // Importante: FuzzyText precisa de um tamanho de fonte definido
+          
           '& .fuzzy-text': {
             fontSize: 'inherit',
           },
