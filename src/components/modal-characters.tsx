@@ -102,7 +102,6 @@ export default function CharacterModal({
             <div style={{ display: 'grid', gap: '15px' }}>
               <InfoRow label="Vila" value={character.village.name} />
               <InfoRow label="Rank" value={character.rank} />
-              <InfoRow label="Poder" value={character.power.toString()} />
             </div>
 
             {character.summary && (
