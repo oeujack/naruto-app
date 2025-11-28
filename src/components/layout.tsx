@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { Outlet } from '@tanstack/react-router';
+import CreateBy from './create-by';
 
 export function Layout() {
   return (
@@ -15,6 +16,7 @@ export function Layout() {
       <Box sx={{ flex: 1 }}>
         <Outlet />
       </Box>
+      <CreateBy position="footer" />
     </Box>
   );
 }
