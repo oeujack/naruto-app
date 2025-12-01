@@ -47,8 +47,8 @@ Uma aplicação web interativa para explorar personagens do universo Naruto, uti
 
 1. **Clone o repositório**
 ```bash
-git clone <seu-repositorio>
-cd naruto-app
+git clone https://github.com/oeujack/shinobi-gallery-app.git
+cd shinobi-gallery-app
 ```
 
 2. **Instale as dependências**
